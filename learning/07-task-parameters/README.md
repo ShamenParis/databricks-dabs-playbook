@@ -44,4 +44,4 @@ databricks bundle run task_parameters_job
 
 Task B and Task C execute in parallel. Each receives the values broadcast by Task A.
 
-<video src="../../docs/learning/07-task-parameters/04-task-parameters.mp4" width="100%" controls></video>
+[View Demo: 04-task-parameters.mp4](../../docs/learning/07-task-parameters/04-task-parameters.mp4)

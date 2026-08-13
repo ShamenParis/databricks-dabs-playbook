@@ -43,4 +43,4 @@ databricks bundle run master_orchestration_job
 
 In the Workflows UI, you will see Task A execute locally as a notebook, Task B show a dedicated pipeline execution node, and Task C show a direct link to the triggered `child_reporting_job` run instance.
 
-<video src="../../docs/learning/13-advanced-job-pipeline/02-advance-etl.mp4" width="100%" controls></video>
+[View Demo: 02-advance-etl.mp4](../../docs/learning/13-advanced-job-pipeline/02-advance-etl.mp4)

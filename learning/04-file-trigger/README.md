@@ -56,4 +56,4 @@ Upload a sample file (such as a `.csv` or `.txt`) into your `/Volumes/main/defau
 
 A test file is available at [docs/downloads/04-file-trigger/trigger.csv](../../docs/downloads/04-file-trigger/trigger.csv).
 
-<video src="../../docs/learning/04-file-trigger/04-trigger-file-test.mp4" width="100%" controls></video>
+[View Demo: 04-trigger-file-test.mp4](../../docs/learning/04-file-trigger/04-trigger-file-test.mp4)
