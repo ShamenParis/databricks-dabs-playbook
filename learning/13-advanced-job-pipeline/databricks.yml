@@ -1,0 +1,5 @@
+bundle:
+  name: 13-advanced-job-pipeline
+
+include:
+  - "resources/**/*.yml"

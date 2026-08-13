@@ -1,0 +1,82 @@
+# Variables Configuration — DataEngineering / Development
+# Generated automatically by generate_resources.py
+# DO NOT EDIT DIRECTLY — update configs/variables/environment.yml and re-generate.
+
+variables:
+
+  # ── Workspace ────────────────────────────────────────────────────────────────
+  workspaceHost:
+    description: "Databricks workspace URL (e.g. https://adb-xxxx.azuredatabricks.net)"
+    
+    default: "https://dbc-eb4706a8-23c4.cloud.databricks.com/"
+    
+
+  deploySpn:
+    description: "Service principal application ID used by run_as (leave blank for free edition)"
+    
+    default: ""
+    
+
+  deploymentRootPath:
+    description: "Root path for deployed assets in the workspace"
+    default: "/Workspace/Shared/DataEngineering/"
+
+  # ── Environment ───────────────────────────────────────────────────────────────
+  currentEnv:
+    description: "Current environment name"
+    default: "Development"
+
+  envNameShort:
+    description: "Short environment identifier for resource naming"
+    default: "development"
+
+  teamNameShort:
+    description: "Short team identifier for resource naming"
+    
+    default: "data_eng"
+    
+
+  # ── Compute — Serverless (Free Edition default) ───────────────────────────────
+  environmentVersion:
+    description: "Databricks serverless environment version"
+    default: "5"
+
+  # ── Compute — Classic clusters (optional, paid workspaces) ───────────────────
+  sparkVersion:
+    description: "Databricks Runtime version for job clusters"
+    default: "16.4.x-scala2.12"
+
+  clusterNodeType:
+    description: "Node type ID for job clusters"
+    default: "Standard_D4ds_v5"
+
+  maxWorkers:
+    description: "Maximum autoscale workers for job clusters"
+    default: 2
+
+  # ── Unity Catalog ─────────────────────────────────────────────────────────────
+  catalogName:
+    description: "Unity Catalog catalog name"
+    
+    default: "main"
+    
+
+  schemaName:
+    description: "Unity Catalog schema / database name"
+    default: "default"
+
+  # ── SQL Warehouse ─────────────────────────────────────────────────────────────
+  sqlWarehouseId:
+    description: "SQL Warehouse ID for dashboards, genie spaces, and alerts"
+    
+    default: "2040867186777008"
+    
+
+  # ── Tags ──────────────────────────────────────────────────────────────────────
+  teamTag:
+    description: "Tag value identifying the owning team"
+    default: "DataEngineering"
+
+  costCentre:
+    description: "Cost centre / recharge group for billing"
+    default: ""

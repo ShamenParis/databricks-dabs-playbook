@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Databricks Cluster Config Schema",
+  "type": "object",
+  "required": [
+    "resource_type",
+    "cluster_bundle_name",
+    "cluster_name"
+  ],
+  "properties": {
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "cluster"
+      ]
+    },
+    "cluster_bundle_name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "cluster_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "spark_version": {
+      "type": "string"
+    },
+    "node_type_id": {
+      "type": "string"
+    },
+    "driver_node_type_id": {
+      "type": "string"
+    },
+    "num_workers": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "min_workers": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_workers": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "autotermination_minutes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "data_security_mode": {
+      "type": "string",
+      "enum": [
+        "SINGLE_USER",
+        "USER_ISOLATION",
+        "NONE"
+      ]
+    },
+    "runtime_engine": {
+      "type": "string",
+      "enum": [
+        "STANDARD",
+        "PHOTON"
+      ]
+    },
+    "policy_id": {
+      "type": "string"
+    },
+    "spark_conf": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "spark_env_vars": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "cluster_tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "level"
+        ],
+        "properties": {
+          "group_name": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "CAN_ATTACH_TO",
+              "CAN_RESTART",
+              "CAN_MANAGE"
+            ]
+          }
+        }
+      }
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Optional comment for documentation purposes"
+    }
+  },
+  "additionalProperties": false
+}

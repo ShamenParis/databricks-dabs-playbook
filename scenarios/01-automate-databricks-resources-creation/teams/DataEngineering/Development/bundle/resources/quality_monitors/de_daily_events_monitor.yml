@@ -1,0 +1,62 @@
+
+resources:
+  quality_monitors:
+    de_daily_events_monitor:
+
+      
+      table_name: "main.demo.daily_events"
+
+      
+      assets_dir: "/Shared/DataEngineering/monitors/daily_events"
+
+      
+      output_schema_name: "main.demo"
+
+      
+
+      time_series:
+        timestamp_col: "event_date"
+        granularities:
+
+          - "1 day"
+
+          - "1 week"
+
+
+
+      
+
+      slicing_exprs:
+
+        - "region"
+
+        - "product_category"
+
+
+
+      
+
+
+      
+
+      schedule:
+        quartz_cron_expression: "0 0 8 * * ?"
+        timezone_id: "Europe/London"
+
+
+      
+
+      notifications:
+        on_new_classification_tag_detected:
+          email_addresses:
+
+            - "team@example.com"
+
+        on_failure:
+          email_addresses:
+
+            - "team@example.com"
+
+
+
+      skip_builtin_dashboard: false

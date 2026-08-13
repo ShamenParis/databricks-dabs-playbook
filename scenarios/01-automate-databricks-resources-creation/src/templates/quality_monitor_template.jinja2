@@ -1,0 +1,92 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   quality_monitor_template.jinja2
+   Renders a Lakehouse Monitor (Quality Monitor) resource.
+   Attaches to an existing Delta table in Unity Catalog.
+   ───────────────────────────────────────────────────────────────────────────── #}
+resources:
+  quality_monitors:
+    {{ monitor_bundle_name }}:
+
+      {# ── Target table (fully qualified) ───────────────────────────────────── #}
+      table_name: "{{ table_name }}"
+
+      {# ── Assets output directory ───────────────────────────────────────────── #}
+      assets_dir: "{{ assets_dir | default('/Workspace/Shared/' + team_name + '/monitors') }}"
+
+      {# ── Output schema for monitor tables ─────────────────────────────────── #}
+      output_schema_name: "{{ output_schema_name | default('${var.catalogName}.${var.schemaName}') }}"
+
+      {# ── Monitor type ─────────────────────────────────────────────────────── #}
+{% if monitor_type == "timeseries" %}
+      time_series:
+        timestamp_col: "{{ timestamp_col }}"
+        granularities:
+{% for g in granularities %}
+          - "{{ g }}"
+{% endfor %}
+{% elif monitor_type == "inference" %}
+      inference_log:
+        problem_type: "{{ problem_type | default('PROBLEM_TYPE_REGRESSION') }}"
+        prediction_col: "{{ prediction_col }}"
+{% if label_col is defined and label_col %}
+        label_col: "{{ label_col }}"
+{% endif %}
+{% if model_id_col is defined and model_id_col %}
+        model_id_col: "{{ model_id_col }}"
+{% endif %}
+        timestamp_col: "{{ timestamp_col }}"
+        granularities:
+{% for g in granularities %}
+          - "{{ g }}"
+{% endfor %}
+{% else %}
+      {# default: snapshot #}
+      snapshot: {}
+{% endif %}
+
+      {# ── Slicing expressions ───────────────────────────────────────────────── #}
+{% if slicing_exprs %}
+      slicing_exprs:
+{% for expr in slicing_exprs %}
+        - "{{ expr }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Custom metrics ────────────────────────────────────────────────────── #}
+{% if custom_metrics %}
+      custom_metrics:
+{% for m in custom_metrics %}
+        - name: "{{ m.name }}"
+          definition: "{{ m.definition }}"
+          input_columns:
+{% for col in m.input_columns %}
+            - "{{ col }}"
+{% endfor %}
+          output_data_type: "{{ m.output_data_type | default('DOUBLE') }}"
+          type: "{{ m.type | default('AGGREGATE') }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Schedule ─────────────────────────────────────────────────────────── #}
+{% if schedule_cron is defined and schedule_cron %}
+      schedule:
+        quartz_cron_expression: "{{ schedule_cron }}"
+        timezone_id: "{{ schedule_timezone | default('UTC') }}"
+{% endif %}
+
+      {# ── Notifications ─────────────────────────────────────────────────────── #}
+{% if alert_emails %}
+      notifications:
+        on_new_classification_tag_detected:
+          email_addresses:
+{% for email in alert_emails %}
+            - "{{ email }}"
+{% endfor %}
+        on_failure:
+          email_addresses:
+{% for email in alert_emails %}
+            - "{{ email }}"
+{% endfor %}
+{% endif %}
+
+      skip_builtin_dashboard: {{ skip_builtin_dashboard | default(false) | lower }}

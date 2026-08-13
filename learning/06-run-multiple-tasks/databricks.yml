@@ -1,0 +1,5 @@
+bundle:
+  name: 06-run-multiple-tasks
+
+include:
+  - "resources/jobs/*.yml"

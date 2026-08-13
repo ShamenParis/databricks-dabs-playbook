@@ -1,0 +1,8 @@
+name: 'dab_dbt_demo'
+version: '1.0.0'
+config-version: 2
+profile: local_databricks_cluster
+
+models:
+  dab_dbt_demo:
+    +materialized: table

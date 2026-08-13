@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Quality Monitor Config Schema",
+  "type": "object",
+  "required": [
+    "resource_type",
+    "monitor_bundle_name",
+    "table_name",
+    "monitor_type"
+  ],
+  "properties": {
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "quality_monitor"
+      ]
+    },
+    "monitor_bundle_name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "table_name": {
+      "type": "string",
+      "description": "Fully-qualified Unity Catalog table name (catalog.schema.table)"
+    },
+    "assets_dir": {
+      "type": "string"
+    },
+    "output_schema_name": {
+      "type": "string"
+    },
+    "monitor_type": {
+      "type": "string",
+      "enum": [
+        "snapshot",
+        "timeseries",
+        "inference"
+      ]
+    },
+    "timestamp_col": {
+      "type": "string",
+      "description": "Required for timeseries and inference"
+    },
+    "granularities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prediction_col": {
+      "type": "string"
+    },
+    "label_col": {
+      "type": "string"
+    },
+    "model_id_col": {
+      "type": "string"
+    },
+    "problem_type": {
+      "type": "string",
+      "enum": [
+        "PROBLEM_TYPE_REGRESSION",
+        "PROBLEM_TYPE_CLASSIFICATION"
+      ]
+    },
+    "slicing_exprs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "custom_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "definition",
+          "input_columns"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "input_columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "output_data_type": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "AGGREGATE",
+              "DERIVED",
+              "DRIFT_METRIC"
+            ]
+          }
+        }
+      }
+    },
+    "schedule_cron": {
+      "type": "string"
+    },
+    "schedule_timezone": {
+      "type": "string"
+    },
+    "pause_status": {
+      "type": "boolean"
+    },
+    "alert_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "skip_builtin_dashboard": {
+      "type": "boolean",
+      "default": false
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Optional comment for documentation purposes"
+    }
+  },
+  "additionalProperties": false
+}

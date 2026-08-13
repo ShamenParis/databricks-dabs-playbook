@@ -1,0 +1,80 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   cluster_template.jinja2
+   Renders an all-purpose interactive cluster resource.
+   ───────────────────────────────────────────────────────────────────────────── #}
+resources:
+  clusters:
+    {{ cluster_bundle_name }}:
+      cluster_name: "{{ cluster_name }}"
+
+      spark_version: "{{ spark_version | default('${var.sparkVersion}') }}"
+
+      {# ── Workers ──────────────────────────────────────────────────────────── #}
+{% if num_workers is defined and num_workers is not none %}
+      num_workers: {{ num_workers }}
+{% else %}
+      autoscale:
+        min_workers: {{ min_workers | default(1) }}
+        max_workers: {{ max_workers | default(4) }}
+{% endif %}
+
+      {# ── Node type ─────────────────────────────────────────────────────────── #}
+{% if node_type_id is defined and node_type_id %}
+      node_type_id: "{{ node_type_id }}"
+{% else %}
+      node_type_id: "${var.clusterNodeType}"
+{% endif %}
+
+      {# ── Driver node ───────────────────────────────────────────────────────── #}
+{% if driver_node_type_id is defined and driver_node_type_id %}
+      driver_node_type_id: "{{ driver_node_type_id }}"
+{% endif %}
+
+      data_security_mode: "{{ data_security_mode | default('SINGLE_USER') }}"
+      runtime_engine: "{{ runtime_engine | default('STANDARD') }}"
+
+      {# ── Auto-termination ─────────────────────────────────────────────────── #}
+      autotermination_minutes: {{ autotermination_minutes | default(30) }}
+
+      {# ── Spark config ─────────────────────────────────────────────────────── #}
+{% if spark_conf %}
+      spark_conf:
+{% for key, value in spark_conf.items() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Environment variables ─────────────────────────────────────────────── #}
+{% if spark_env_vars %}
+      spark_env_vars:
+{% for key, value in spark_env_vars.items() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Policy ───────────────────────────────────────────────────────────── #}
+{% if policy_id is defined and policy_id %}
+      policy_id: "{{ policy_id }}"
+{% endif %}
+
+      {# ── Tags ─────────────────────────────────────────────────────────────── #}
+{% if cluster_tags %}
+      custom_tags:
+{% for key, value in cluster_tags.items() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Permissions ──────────────────────────────────────────────────────── #}
+{% if permissions %}
+      permissions:
+{% for permission in permissions %}
+{% if permission.group_name is defined %}
+        - group_name: "{{ permission.group_name }}"
+          level: {{ permission.level }}
+{% elif permission.user_name is defined %}
+        - user_name: "{{ permission.user_name }}"
+          level: {{ permission.level }}
+{% endif %}
+{% endfor %}
+{% endif %}

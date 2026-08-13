@@ -1,0 +1,139 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   job_template.jinja2
+   Renders a single Databricks job resource block inside resources/jobs/<name>.yml
+
+   Modes:
+     • use_serverless: true  (default / free edition) — uses environments block
+     • use_serverless: false (paid workspace)         — uses job_clusters block
+   ───────────────────────────────────────────────────────────────────────────── #}
+resources:
+  jobs:
+    {{ job_bundle_name }}:
+      name: "{{ job_name }}"
+
+      max_concurrent_runs: {{ max_concurrent_runs if max_concurrent_runs is not none else 1 }}
+
+{% if timeout_seconds is defined and timeout_seconds is not none %}
+      timeout_seconds: {{ timeout_seconds }}
+{% endif %}
+
+{% if warning_duration_seconds is defined and warning_duration_seconds is not none %}
+      health:
+        rules:
+          - metric: RUN_DURATION_SECONDS
+            op: GREATER_THAN
+            value: {{ warning_duration_seconds }}
+{% endif %}
+
+      tasks:
+{{ tasks_yaml | indent(8, True) }}
+
+      {# ── Serverless compute (Free Edition / default) ─────────────────────── #}
+{% if use_serverless %}
+      environments:
+        - environment_key: Default
+          spec:
+            client: "1"
+      performance_target: PERFORMANCE_OPTIMIZED
+{% else %}
+      {# ── Classic job cluster (paid workspaces) ───────────────────────────── #}
+      job_clusters:
+        - job_cluster_key: {{ job_cluster_key }}
+          new_cluster:
+            spark_version: ${var.sparkVersion}
+            node_type_id: ${var.clusterNodeType}
+            enable_elastic_disk: true
+            spark_conf:
+              spark.databricks.sql.initial.catalog.name: ${var.catalogName}
+            autoscale:
+              min_workers: 1
+              max_workers: {{ max_workers | default(2) }}
+{% if policy_id is defined and policy_id is not none and policy_id != "" %}
+            policy_id: {{ policy_id }}
+{% endif %}
+            data_security_mode: SINGLE_USER
+            runtime_engine: STANDARD
+{% endif %}
+
+      {# ── Email notifications ─────────────────────────────────────────────── #}
+{% if email_notification %}
+      email_notifications:
+{% if on_failure_emails %}
+        on_failure:
+{% for email in on_failure_emails %}
+          - {{ email }}
+{% endfor %}
+{% endif %}
+{% if on_success_emails %}
+        on_success:
+{% for email in on_success_emails %}
+          - {{ email }}
+{% endfor %}
+{% endif %}
+{% if on_duration_warning_threshold_exceeded_emails %}
+        on_duration_warning_threshold_exceeded:
+{% for email in on_duration_warning_threshold_exceeded_emails %}
+          - {{ email }}
+{% endfor %}
+{% endif %}
+        no_alert_for_skipped_runs: true
+{% endif %}
+
+      {# ── Schedule ────────────────────────────────────────────────────────── #}
+      {% if schedule_flag and cron_schedule %}
+      schedule:
+        quartz_cron_expression: "{{ cron_schedule }}"
+        timezone_id: "{{ timezone_id }}"
+        pause_status: {{ "PAUSED" if pause_status_flag else "UNPAUSED" }}
+      {% endif %}
+
+      {# ── File-arrival trigger (mutually exclusive with schedule) ─────────── #}
+{% if trigger %}
+      trigger:
+        pause_status: {{ 'PAUSED' if pause_status else 'UNPAUSED' }}
+        file_arrival:
+          url: "{{ trigger_url }}"
+{% endif %}
+
+      queue:
+        enabled: true
+
+      {# ── Tags ────────────────────────────────────────────────────────────── #}
+{% if job_tags %}
+      tags:
+{% for key, value in job_tags.items() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Job-level parameters ────────────────────────────────────────────── #}
+{% if job_parameters %}
+      parameters:
+{% for key, value in job_parameters.items() %}
+        - name: {{ key }}
+          default: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── run_as (optional — omit for free edition) ───────────────────────── #}
+{% if job_run_as is defined and job_run_as is not none and job_run_as != "" %}
+      run_as:
+        service_principal_name: "{{ job_run_as }}"
+{% endif %}
+
+      {# ── Permissions ─────────────────────────────────────────────────────── #}
+{% if permissions %}
+      permissions:
+{% for permission in permissions %}
+{% if permission.group_name is defined %}
+        - group_name: "{{ permission.group_name }}"
+          level: {{ permission.level }}
+{% elif permission.service_principal_name is defined %}
+        - service_principal_name: "{{ permission.service_principal_name }}"
+          level: {{ permission.level }}
+{% elif permission.user_name is defined %}
+        - user_name: "{{ permission.user_name }}"
+          level: {{ permission.level }}
+{% endif %}
+{% endfor %}
+{% endif %}

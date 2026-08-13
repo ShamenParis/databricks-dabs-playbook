@@ -1,0 +1,11 @@
+resources:
+  pipelines:
+    demo_dlt_pipeline:
+      name: "12_Create_DLT_Pipeline"
+      catalog: "main"
+      target: "demo" # This maps the output to main.demo
+      development: true # Keeps compute running for faster iterative testing
+      serverless: true
+      libraries:
+        - notebook:
+            path: "../../src/dlt_pipeline_notebook.py"

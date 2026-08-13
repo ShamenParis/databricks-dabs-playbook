@@ -1,0 +1,33 @@
+{
+  "_comment": "Sample master workflow that triggers an existing pipeline and job. Update the IDs below to test.",
+  "resource_type": "job",
+  "job_bundle_name": "de_master_orchestration_job",
+  "job_name": "DataEngineering — Master Orchestration Workflow",
+  "use_serverless": true,
+  "max_concurrent_runs": 1,
+  "timeout_seconds": 7200,
+  "tasks": [
+    {
+      "task_key": "trigger_ingestion_pipeline",
+      "task_type": "pipeline_task",
+      "pipeline_id": "YOUR_PIPELINE_ID_HERE",
+      "full_refresh": false
+    },
+    {
+      "task_key": "trigger_downstream_job",
+      "task_type": "run_job_task",
+      "job_id": 1234567890,
+      "dependance_task_keys": [
+        "trigger_ingestion_pipeline"
+      ],
+      "job_parameters": {
+        "run_date": "2026-08-13"
+      }
+    }
+  ],
+  "tags": {
+    "team": "DataEngineering",
+    "env": "Development",
+    "managed_by": "dab-generator"
+  }
+}

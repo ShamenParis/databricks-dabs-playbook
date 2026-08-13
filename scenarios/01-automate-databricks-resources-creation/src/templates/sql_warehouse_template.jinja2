@@ -1,0 +1,50 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   sql_warehouse_template.jinja2
+   Renders a SQL Warehouse (Serverless or Classic) resource.
+   ───────────────────────────────────────────────────────────────────────────── #}
+resources:
+  sql_warehouses:
+    {{ warehouse_bundle_name }}:
+      name: "{{ warehouse_name }}"
+
+      cluster_size: "{{ cluster_size | default('2X-Small') }}"
+
+      {# ── Scaling ───────────────────────────────────────────────────────────── #}
+      min_num_clusters: {{ min_num_clusters | default(1) }}
+      max_num_clusters: {{ max_num_clusters | default(1) }}
+
+      {# ── Auto-stop ─────────────────────────────────────────────────────────── #}
+      auto_stop_mins: {{ auto_stop_mins | default(30) }}
+
+      {# ── Warehouse type ────────────────────────────────────────────────────── #}
+      warehouse_type: "{{ warehouse_type | default('PRO') }}"
+
+      {# ── Serverless ────────────────────────────────────────────────────────── #}
+      enable_serverless_compute: {{ enable_serverless | default(true) | lower }}
+
+      {# ── Spot policy ───────────────────────────────────────────────────────── #}
+      spot_instance_policy: "{{ spot_policy | default('COST_OPTIMIZED') }}"
+
+      {# ── Tags ─────────────────────────────────────────────────────────────── #}
+{% if warehouse_tags %}
+      tags:
+        custom_tags:
+{% for key, value in warehouse_tags.items() %}
+          - key: "{{ key }}"
+            value: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Permissions ──────────────────────────────────────────────────────── #}
+{% if permissions %}
+      permissions:
+{% for permission in permissions %}
+{% if permission.group_name is defined %}
+        - group_name: "{{ permission.group_name }}"
+          level: {{ permission.level }}
+{% elif permission.user_name is defined %}
+        - user_name: "{{ permission.user_name }}"
+          level: {{ permission.level }}
+{% endif %}
+{% endfor %}
+{% endif %}

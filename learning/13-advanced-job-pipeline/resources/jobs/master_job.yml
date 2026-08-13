@@ -1,0 +1,33 @@
+resources:
+  jobs:
+    master_orchestration_job:
+      name: "13_Master_Orchestration_Job"
+
+      tasks:
+        # Task A: Run a standard notebook
+        - task_key: "task_a_setup"
+          notebook_task:
+            notebook_path: "../../src/task_a_setup.py"
+          environment_key: Default
+            
+        # Task B: Run the DLT Pipeline
+        - task_key: "task_b_run_pipeline"
+          depends_on:
+            - task_key: "task_a_setup"
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.advanced_dlt_pipeline.id}
+
+        # Task C: Run a separate job
+        - task_key: "task_c_run_child_job"
+          depends_on:
+            - task_key: "task_b_run_pipeline"
+          run_job_task:
+            job_id: ${resources.jobs.child_reporting_job.id}
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SQL Warehouse Config Schema",
+  "type": "object",
+  "required": [
+    "resource_type",
+    "warehouse_bundle_name",
+    "warehouse_name"
+  ],
+  "properties": {
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "sql_warehouse"
+      ]
+    },
+    "warehouse_bundle_name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "warehouse_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "cluster_size": {
+      "type": "string",
+      "enum": [
+        "2X-Small",
+        "X-Small",
+        "Small",
+        "Medium",
+        "Large",
+        "X-Large",
+        "2X-Large",
+        "3X-Large",
+        "4X-Large"
+      ],
+      "default": "2X-Small"
+    },
+    "min_num_clusters": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+    },
+    "max_num_clusters": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+    },
+    "auto_stop_mins": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 30
+    },
+    "warehouse_type": {
+      "type": "string",
+      "enum": [
+        "PRO",
+        "CLASSIC"
+      ],
+      "default": "PRO"
+    },
+    "enable_serverless": {
+      "type": "boolean",
+      "default": true
+    },
+    "spot_policy": {
+      "type": "string",
+      "enum": [
+        "COST_OPTIMIZED",
+        "RELIABILITY_OPTIMIZED"
+      ],
+      "default": "COST_OPTIMIZED"
+    },
+    "warehouse_tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "level"
+        ],
+        "properties": {
+          "group_name": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "CAN_USE",
+              "CAN_MANAGE"
+            ]
+          }
+        }
+      }
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Optional comment for documentation purposes"
+    }
+  },
+  "additionalProperties": false
+}

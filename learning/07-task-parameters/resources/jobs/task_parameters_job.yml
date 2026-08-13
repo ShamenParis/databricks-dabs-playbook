@@ -1,0 +1,40 @@
+resources:
+  jobs:
+    task_parameters_job:
+      name: "07_Task_Parameters"
+      
+      tasks:
+        # Task A: Generates the dynamic values
+        - task_key: "task_a"
+          notebook_task:
+            notebook_path: "../../src/task_a.py"
+          environment_key: Default
+            
+        # Task B: Receives parameters from Task A
+        - task_key: "task_b"
+          depends_on:
+            - task_key: "task_a"
+          notebook_task:
+            notebook_path: "../../src/task_b.py"
+            base_parameters:
+              table_to_process: "{{tasks.task_a.values.target_table}}"
+              run_mode: "{{tasks.task_a.values.run_mode}}"
+          environment_key: Default
+
+        # Task C: Also receives parameters from Task A
+        - task_key: "task_c"
+          depends_on:
+            - task_key: "task_a"
+          notebook_task:
+            notebook_path: "../../src/task_c.py"
+            base_parameters:
+              table_to_process: "{{tasks.task_a.values.target_table}}"
+          environment_key: Default
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

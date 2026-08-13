@@ -1,0 +1,43 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   dashboard_template.jinja2
+   Renders a Lakeview (AI/BI) Dashboard resource.
+   The dashboard JSON file (.lvdash.json) must be created in the workspace
+   and its relative path set in file_path.
+   ───────────────────────────────────────────────────────────────────────────── #}
+resources:
+  dashboards:
+    {{ dashboard_bundle_name }}:
+      display_name: "{{ display_name }}"
+
+      {# ── Source file ──────────────────────────────────────────────────────── #}
+{% if file_path is defined and file_path %}
+      file_path: "{{ file_path }}"
+{% endif %}
+
+      {# ── SQL warehouse ────────────────────────────────────────────────────── #}
+      warehouse_id: "${var.sqlWarehouseId}"
+
+      {# ── Embed credentials ────────────────────────────────────────────────── #}
+      embed_credentials: {{ embed_credentials | default(false) | lower }}
+
+      {# ── Workspace parent folder ──────────────────────────────────────────── #}
+{% if parent_path is defined and parent_path %}
+      parent_path: "{{ parent_path }}"
+{% endif %}
+
+      {# ── Permissions ──────────────────────────────────────────────────────── #}
+{% if permissions %}
+      permissions:
+{% for permission in permissions %}
+{% if permission.group_name is defined %}
+        - group_name: "{{ permission.group_name }}"
+          level: {{ permission.level }}
+{% elif permission.user_name is defined %}
+        - user_name: "{{ permission.user_name }}"
+          level: {{ permission.level }}
+{% elif permission.service_principal_name is defined %}
+        - service_principal_name: "{{ permission.service_principal_name }}"
+          level: {{ permission.level }}
+{% endif %}
+{% endfor %}
+{% endif %}

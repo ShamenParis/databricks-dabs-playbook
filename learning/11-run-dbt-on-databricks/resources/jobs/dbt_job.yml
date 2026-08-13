@@ -1,0 +1,43 @@
+resources:
+  jobs:
+    dbt_orchestration_job:
+      name: "11_Run_DBT_Project"
+
+      tasks:
+        # Task A: Python script to set up our raw table
+        - task_key: "task_a_setup_data"
+          notebook_task:
+            notebook_path: "../../src/task_a_setup.py"
+          environment_key: Default
+            
+        # Task B: Native dbt task running on a SQL Warehouse
+        - task_key: "task_b_dbt_run"
+          depends_on:
+            - task_key: "task_a_setup_data"
+          dbt_task:
+            project_directory: "../../src/dbt_project"
+            commands:
+              - 'dbt deps'
+              - 'dbt run'
+            catalog: main
+            schema: demo
+            warehouse_id: ${var.sql_warehouse_id} # This is for DBT commands to use SQL warehouse
+          environment_key: Default # This is for DBT CLI execution on Databricks
+
+        # Task C: Python script to validate the dbt output
+        - task_key: "task_c_validate_output"
+          depends_on:
+            - task_key: "task_b_dbt_run"
+          notebook_task:
+            notebook_path: "../../src/task_c_validate.py"
+          environment_key: Default
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+            dependencies:
+              - dbt-databricks>=1.0.0,<2.0.0
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

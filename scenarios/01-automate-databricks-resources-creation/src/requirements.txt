@@ -1,0 +1,46 @@
+# Core application dependencies
+jinja2
+pandas
+jsonschema
+databricks-sdk>=0.1.0
+
+# Testing framework (from test_requirements.txt)
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+pytest-xdist>=3.3.1
+
+# Testing utilities
+mock>=5.1.0
+faker>=19.2.0
+
+# Code quality
+pytest-flake8>=1.1.1
+pytest-pylint>=0.21.0
+
+# For mocking and patching
+unittest-xml-reporting>=3.2.0
+
+# YAML support (for configuration files)
+PyYAML>=6.0.1
+
+# Optional: For better test output
+pytest-html>=3.2.0
+pytest-json-report>=1.5.0
+
+# Optional: For parallel test execution
+pytest-parallel>=0.1.1
+
+# Optional: For testing async code (if needed)
+pytest-asyncio>=0.21.1
+
+# Optional: For better assertions
+pytest-check>=2.2.2
+
+# Optional: For snapshot testing
+syrupy>=4.0.0
+
+# Note: PySpark is not included here as it's typically installed separately
+# and may require specific version matching with your Databricks environment.
+# Install PySpark separately if you want to run Spark-dependent tests:
+# pip install pyspark>=3.4.0

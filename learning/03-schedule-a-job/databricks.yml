@@ -1,0 +1,6 @@
+bundle:
+  name: 03-schedule-a-job
+
+# Dynamically load all resource definitions from their respective folders
+include:
+  - "resources/jobs/*.yml"

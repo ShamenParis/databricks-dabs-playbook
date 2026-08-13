@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Databricks Dashboard Config Schema",
+  "type": "object",
+  "required": [
+    "resource_type",
+    "dashboard_bundle_name",
+    "display_name"
+  ],
+  "properties": {
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "dashboard"
+      ]
+    },
+    "dashboard_bundle_name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "file_path": {
+      "type": "string",
+      "description": "Relative path to the .lvdash.json file (e.g. ./src/assets/my_dashboard.lvdash.json)"
+    },
+    "embed_credentials": {
+      "type": "boolean",
+      "default": false
+    },
+    "parent_path": {
+      "type": "string",
+      "description": "Workspace folder path (e.g. /Shared/MyTeam)"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "level"
+        ],
+        "properties": {
+          "group_name": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "service_principal_name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "CAN_READ",
+              "CAN_EDIT",
+              "CAN_RUN",
+              "CAN_MANAGE"
+            ]
+          }
+        }
+      }
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Optional comment for documentation purposes"
+    }
+  },
+  "additionalProperties": false
+}

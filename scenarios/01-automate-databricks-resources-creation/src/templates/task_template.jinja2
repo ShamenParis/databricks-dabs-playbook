@@ -1,0 +1,131 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   task_template.jinja2
+   Renders a single task entry in a job's tasks list.
+
+   Supported task types (set via task_type field in config):
+     • notebook_task   — Databricks notebook (default)
+     • python_task     — Python script file
+     • spark_jar_task  — JAR task
+     • sql_task        — SQL query / file
+   ───────────────────────────────────────────────────────────────────────────── #}
+- task_key: {{ task_key }}
+
+  {# ── Compute reference ──────────────────────────────────────────────────── #}
+{% if task_type not in ["run_job_task", "pipeline_task"] %}
+{% if use_serverless %}
+  environment_key: Default
+{% else %}
+  job_cluster_key: {{ job_cluster_key }}
+{% endif %}
+{% endif %}
+
+  {# ── Task type ──────────────────────────────────────────────────────────── #}
+{% if task_type == "python_task" %}
+  spark_python_task:
+    python_file: "{{ python_file }}"
+{% if task_parameters %}
+    parameters:
+{% for key, value in task_parameters.items() %}
+      - "--{{ key }}={{ value }}"
+{% endfor %}
+{% endif %}
+
+{% elif task_type == "sql_task" %}
+  sql_task:
+{% if sql_query is defined and sql_query %}
+    query:
+      query_id: "{{ sql_query }}"
+{% elif sql_file is defined and sql_file %}
+    file:
+      path: "{{ sql_file }}"
+{% endif %}
+    warehouse_id: "${var.sqlWarehouseId}"
+
+{% elif task_type == "run_job_task" %}
+  run_job_task:
+    job_id: {{ job_id }}
+{% if job_parameters is defined and job_parameters %}
+    job_parameters:
+{% for key, value in job_parameters.items() %}
+      {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+{% elif task_type == "pipeline_task" %}
+  pipeline_task:
+    pipeline_id: "{{ pipeline_id }}"
+{% if full_refresh is defined and full_refresh %}
+    full_refresh: {{ full_refresh | lower }}
+{% endif %}
+
+{% else %}
+  {# default: notebook_task #}
+  notebook_task:
+    notebook_path: "{{ notebook_path }}"
+    source: {{ source | default('WORKSPACE') }}
+{% if task_parameters %}
+    base_parameters:
+{% for key, value in task_parameters.items() %}
+      {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+{% endif %}
+
+  {# ── Timeout ────────────────────────────────────────────────────────────── #}
+{% if timeout_seconds_flag %}
+  timeout_seconds: {{ timeout_seconds }}
+{% endif %}
+
+  {# ── Retries ────────────────────────────────────────────────────────────── #}
+{% if max_retries is defined and max_retries is not none %}
+  max_retries: {{ max_retries }}
+{% if min_retry_interval_millis is defined and min_retry_interval_millis is not none %}
+  min_retry_interval_millis: {{ min_retry_interval_millis }}
+  retry_on_timeout: true
+{% endif %}
+{% endif %}
+
+  {# ── Dependencies ───────────────────────────────────────────────────────── #}
+{% if task_dependency_flag %}
+  depends_on:
+{% for dep_key in dependance_task_keys %}
+    - task_key: {{ dep_key }}
+{% endfor %}
+{% endif %}
+
+  {# ── Health / warning ───────────────────────────────────────────────────── #}
+{% if warning_flag and warning_duration_seconds is not none %}
+  health:
+    rules:
+      - metric: RUN_DURATION_SECONDS
+        op: GREATER_THAN
+        value: {{ warning_duration_seconds }}
+{% endif %}
+
+  {# ── Task-level notifications ────────────────────────────────────────────── #}
+{% if task_email_notification_flag %}
+  email_notifications:
+{% if on_failure_emails %}
+    on_failure:
+{% for email in on_failure_emails %}
+      - {{ email }}
+{% endfor %}
+{% endif %}
+{% if on_success_emails %}
+    on_success:
+{% for email in on_success_emails %}
+      - {{ email }}
+{% endfor %}
+{% endif %}
+{% if on_duration_warning_threshold_exceeded_emails %}
+    on_duration_warning_threshold_exceeded:
+{% for email in on_duration_warning_threshold_exceeded_emails %}
+      - {{ email }}
+{% endfor %}
+{% endif %}
+  notification_settings:
+    no_alert_for_skipped_runs: true
+    no_alert_for_canceled_runs: true
+    alert_on_last_attempt: true
+{% endif %}

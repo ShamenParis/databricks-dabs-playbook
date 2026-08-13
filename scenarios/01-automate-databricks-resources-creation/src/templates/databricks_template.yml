@@ -1,0 +1,23 @@
+# Databricks Bundle Configuration — {{ team_name }} / {{ env_name }}
+# Generated automatically by generate_resources.py
+# DO NOT EDIT DIRECTLY — update configs and re-generate.
+
+bundle:
+  name: {{ team_name | lower | replace(' ', '_') }}_{{ env_name | lower | replace('-', '_') | replace(' ', '_') }}
+
+include:
+  - variables.yml
+  - resources/jobs/*.yml
+  - resources/pipelines/*.yml
+  - resources/dashboards/*.yml
+  - resources/genie_spaces/*.yml
+  - resources/apps/*.yml
+  - resources/clusters/*.yml
+  - resources/sql_warehouses/*.yml
+  - resources/experiments/*.yml
+  - resources/registered_models/*.yml
+  - resources/quality_monitors/*.yml
+
+targets:
+  development:
+    mode: development

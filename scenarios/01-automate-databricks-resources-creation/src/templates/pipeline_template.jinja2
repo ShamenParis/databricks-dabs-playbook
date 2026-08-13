@@ -1,0 +1,102 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   pipeline_template.jinja2
+   Renders a Delta Live Tables (DLT) pipeline resource.
+   ───────────────────────────────────────────────────────────────────────────── #}
+resources:
+  pipelines:
+    {{ pipeline_bundle_name }}:
+      name: "{{ pipeline_name }}"
+
+      {# ── Unity Catalog target ─────────────────────────────────────────────── #}
+{% if catalog is defined and catalog %}
+      catalog: "{{ catalog }}"
+{% endif %}
+{% if target_schema is defined and target_schema %}
+      target: "{{ target_schema }}"
+{% endif %}
+
+      {# ── Notebooks / Python files ─────────────────────────────────────────── #}
+      libraries:
+{% for lib in libraries %}
+{% if lib.notebook_path is defined %}
+        - notebook:
+            path: "{{ lib.notebook_path }}"
+{% elif lib.python_file is defined %}
+        - file:
+            path: "{{ lib.python_file }}"
+{% endif %}
+{% endfor %}
+
+      {# ── Mode ─────────────────────────────────────────────────────────────── #}
+      continuous: {{ continuous | default(false) | lower }}
+      development: {{ development_mode | default(true) | lower }}
+
+      {# ── Channel ──────────────────────────────────────────────────────────── #}
+      channel: "{{ channel | default('CURRENT') }}"
+
+      {# ── Serverless DLT ───────────────────────────────────────────────────── #}
+{% if serverless | default(true) %}
+      serverless: true
+{% else %}
+      {# ── Photon ───────────────────────────────────────────────────────────── #}
+      photon: {{ photon | default(false) | lower }}
+      {# Classic cluster for DLT #}
+      clusters:
+        - label: "default"
+{% if num_workers is defined and num_workers is not none %}
+          num_workers: {{ num_workers }}
+{% else %}
+          autoscale:
+            min_workers: 1
+            max_workers: {{ max_workers | default(2) }}
+            mode: ENHANCED
+{% endif %}
+{% if policy_id is defined and policy_id %}
+          policy_id: "{{ policy_id }}"
+{% endif %}
+{% endif %}
+
+      {# ── Configuration ────────────────────────────────────────────────────── #}
+{% if pipeline_config %}
+      configuration:
+{% for key, value in pipeline_config.items() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Notifications ────────────────────────────────────────────────────── #}
+{% if notifications %}
+      notifications:
+{% for notif in notifications %}
+        - email_recipients:
+{% for email in notif.email_recipients %}
+            - {{ email }}
+{% endfor %}
+          alerts:
+{% for alert in notif.alerts %}
+            - {{ alert }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+      {# ── Tags ─────────────────────────────────────────────────────────────── #}
+{% if pipeline_tags %}
+      tags:
+{% for key, value in pipeline_tags.items() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Permissions ──────────────────────────────────────────────────────── #}
+{% if permissions %}
+      permissions:
+{% for permission in permissions %}
+{% if permission.group_name is defined %}
+        - group_name: "{{ permission.group_name }}"
+          level: {{ permission.level }}
+{% elif permission.user_name is defined %}
+        - user_name: "{{ permission.user_name }}"
+          level: {{ permission.level }}
+{% endif %}
+{% endfor %}
+{% endif %}

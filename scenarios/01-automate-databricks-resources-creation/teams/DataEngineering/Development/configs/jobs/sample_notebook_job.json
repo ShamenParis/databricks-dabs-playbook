@@ -1,0 +1,53 @@
+{
+  "_comment": "Sample serverless notebook job — runs on free edition using serverless compute",
+  "resource_type": "job",
+  "job_bundle_name": "de_ingest_notebook_job",
+  "job_name": "DataEngineering — Daily Ingest (Notebook)",
+  "use_serverless": true,
+  "max_concurrent_runs": 1,
+  "timeout_seconds": 3600,
+  "warning_duration_seconds": 1800,
+  "email_notification": {
+    "on_failure_emails": ["team@example.com"],
+    "on_success_emails": [],
+    "on_duration_warning_threshold_exceeded_emails": ["team@example.com"]
+  },
+  "schedule": {
+    "schedule_cron_expression": "0 0 6 * * ?",
+    "timezone": "Europe/London",
+    "pause_status": true
+  },
+  "tags": {
+    "team": "DataEngineering",
+    "env": "Development",
+    "managed_by": "dab-generator"
+  },
+  "permissions": [
+    {
+      "group_name": "DataEngineers",
+      "level": "CAN_MANAGE_RUN"
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "ingest_raw_data",
+      "task_type": "notebook_task",
+      "notebook_path": "../../src/notebooks/01_ingest_raw_data.py",
+      "source": "WORKSPACE",
+      "task_parameters": {
+        "table_name": "raw_events",
+        "source_path": "/mnt/landing/events"
+      },
+      "max_retries": 2,
+      "min_retry_interval_millis": 30000
+    },
+    {
+      "task_key": "transform_data",
+      "task_type": "notebook_task",
+      "notebook_path": "../../src/notebooks/02_transform_data.py",
+      "source": "WORKSPACE",
+      "dependance_task_keys": ["ingest_raw_data"],
+      "timeout_seconds": 1800
+    }
+  ]
+}

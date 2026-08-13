@@ -1,0 +1,18 @@
+resources:
+  jobs:
+    child_reporting_job:
+      name: "13_Child_Reporting_Job"
+
+      tasks:
+        - task_key: "generate_report"
+          notebook_task:
+            notebook_path: "../../src/task_c_report.py"
+          environment_key: Default
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

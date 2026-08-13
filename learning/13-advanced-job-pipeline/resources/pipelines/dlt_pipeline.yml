@@ -1,0 +1,11 @@
+resources:
+  pipelines:
+    advanced_dlt_pipeline:
+      name: "13_Advanced_DLT_Pipeline"
+      catalog: "main"
+      target: "demo"
+      development: true
+      serverless: true
+      libraries:
+        - notebook:
+            path: "../../src/dlt_pipeline_notebook.py"

@@ -1,0 +1,41 @@
+resources:
+  jobs:
+    if_else_job:
+      name: "08_Use_If_Else_Task"
+      
+      parameters:
+        - name: "simulate_failure"
+          default: "false"
+
+      tasks:
+        # Task A: The evaluator task
+        - task_key: "task_a"
+          notebook_task:
+            notebook_path: "../../src/task_a.py"
+          environment_key: Default
+            
+        # Task B: Runs ONLY if Task A succeeds
+        - task_key: "task_b_on_success"
+          depends_on:
+            - task_key: "task_a"
+          run_if: "ALL_SUCCESS" # This is a conditional check for Success Path
+          notebook_task:
+            notebook_path: "../../src/task_b.py"
+          environment_key: Default
+
+        # Task C: Runs ONLY if Task A fails
+        - task_key: "task_c_on_failure"
+          depends_on:
+            - task_key: "task_a"
+          run_if: "ALL_FAILED" # This is a conditional check for Failure Path
+          notebook_task:
+            notebook_path: "../../src/task_c.py"
+          environment_key: Default
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

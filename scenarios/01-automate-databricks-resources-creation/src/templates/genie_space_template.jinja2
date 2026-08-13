@@ -1,0 +1,55 @@
+{# ─────────────────────────────────────────────────────────────────────────────
+   genie_space_template.jinja2
+   Renders a Genie (AI/BI) Space resource.
+   Requires a SQL warehouse and Unity Catalog tables.
+   ───────────────────────────────────────────────────────────────────────────── #}
+resources:
+  genie_spaces:
+    {{ genie_bundle_name }}:
+      display_name: "{{ display_name }}"
+
+      {# ── Description ──────────────────────────────────────────────────────── #}
+{% if description is defined and description %}
+      description: "{{ description }}"
+{% endif %}
+
+      {# ── SQL warehouse ─────────────────────────────────────────────────────── #}
+      warehouse_id: "${var.sqlWarehouseId}"
+
+      {# ── Tables (Unity Catalog fully-qualified names) ──────────────────────── #}
+{% if tables %}
+      tables:
+{% for table in tables %}
+        - catalog_name: "{{ table.catalog_name | default('${var.catalogName}') }}"
+          schema_name: "{{ table.schema_name | default('${var.schemaName}') }}"
+          table_name: "{{ table.table_name }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Curated questions (example prompts shown in UI) ──────────────────── #}
+{% if curated_questions %}
+      curated_questions:
+{% for q in curated_questions %}
+        - "{{ q }}"
+{% endfor %}
+{% endif %}
+
+      {# ── Instructions (system prompt / instructions for Genie) ─────────────── #}
+{% if instructions is defined and instructions %}
+      instructions: |
+        {{ instructions | indent(8) }}
+{% endif %}
+
+      {# ── Permissions ──────────────────────────────────────────────────────── #}
+{% if permissions %}
+      permissions:
+{% for permission in permissions %}
+{% if permission.group_name is defined %}
+        - group_name: "{{ permission.group_name }}"
+          level: {{ permission.level }}
+{% elif permission.user_name is defined %}
+        - user_name: "{{ permission.user_name }}"
+          level: {{ permission.level }}
+{% endif %}
+{% endfor %}
+{% endif %}

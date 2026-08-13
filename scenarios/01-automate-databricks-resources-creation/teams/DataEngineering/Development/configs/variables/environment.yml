@@ -1,0 +1,55 @@
+# Environment Variables — DataEngineering / Development
+# Update these values for your team and Databricks workspace.
+# Variables here are injected into variables.yml during generation.
+
+variables:
+  # ── Team identity ─────────────────────────────────────────────────────────
+  - name: team_short_name
+    value: "data_eng"
+
+  - name: env_short_name
+    value: "dev"
+
+  # ── Workspace ─────────────────────────────────────────────────────────────
+  # Free edition: paste your workspace URL from the browser address bar
+  - name: workspace_host
+    value: "https://dbc-eb4706a8-23c4.cloud.databricks.com/"
+
+  # Optional — leave blank for free edition (no service principal needed)
+  - name: service_principal_name
+    value: ""
+
+  # CLI profile to use (from ~/.databrickscfg). Set when multiple profiles match the same host.
+  - name: cli_profile
+    value: "freeedishamen"
+
+  # ── Serverless / Compute ──────────────────────────────────────────────────
+  - name: environment_version
+    value: "5"
+
+  # Classic cluster settings (only used when use_serverless: false in job config)
+  - name: spark_version
+    value: "16.4.x-scala2.12"
+
+  - name: cluster_node_type
+    value: "Standard_D4ds_v5"
+
+  - name: max_workers
+    value: 2
+
+  # ── Unity Catalog ─────────────────────────────────────────────────────────
+  - name: catalog_name
+    value: "main"
+
+  - name: schema_name
+    value: "default"
+
+  # ── SQL Warehouse ─────────────────────────────────────────────────────────
+  # Required for dashboards and genie spaces.
+  # Find this in Databricks UI → SQL Warehouses → your warehouse → Connection Details
+  - name: sql_warehouse_id
+    value: "2040867186777008"
+
+  # ── Billing / tagging ─────────────────────────────────────────────────────
+  - name: cost_centre
+    value: ""

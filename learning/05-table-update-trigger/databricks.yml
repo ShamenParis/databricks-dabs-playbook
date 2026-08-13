@@ -1,0 +1,6 @@
+bundle:
+  name: 05-table-update-trigger
+
+# Dynamically load all resource definitions from their respective folders
+include:
+  - "resources/jobs/*.yml"

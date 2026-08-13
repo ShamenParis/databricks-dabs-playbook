@@ -1,0 +1,17 @@
+{
+  "_comment": "Sample Quality Monitor — timeseries type on a silver table",
+  "resource_type": "quality_monitor",
+  "monitor_bundle_name": "de_daily_events_monitor",
+  "table_name": "main.demo.daily_events",
+  "assets_dir": "/Shared/DataEngineering/monitors/daily_events",
+  "output_schema_name": "main.demo",
+  "monitor_type": "timeseries",
+  "timestamp_col": "event_date",
+  "granularities": ["1 day", "1 week"],
+  "slicing_exprs": ["region", "product_category"],
+  "schedule_cron": "0 0 8 * * ?",
+  "schedule_timezone": "Europe/London",
+  "pause_status": false,
+  "alert_emails": ["team@example.com"],
+  "skip_builtin_dashboard": false
+}

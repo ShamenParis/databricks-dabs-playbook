@@ -1,0 +1,10 @@
+bundle:
+  name: 09-sql-tasks-with-variable-lookup
+
+variables:
+  sql_warehouse_id:
+    lookup:
+      warehouse: 'Serverless Starter Warehouse'
+
+include:
+  - "resources/jobs/*.yml"

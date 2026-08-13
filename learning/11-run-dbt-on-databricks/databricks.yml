@@ -1,0 +1,10 @@
+bundle:
+  name: 11-run-dbt-on-databricks
+
+variables:
+  sql_warehouse_id:
+    lookup:
+      warehouse: 'Serverless Starter Warehouse'
+
+include:
+  - "resources/jobs/*.yml"

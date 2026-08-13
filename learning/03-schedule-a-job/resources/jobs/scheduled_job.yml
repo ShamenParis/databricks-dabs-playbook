@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    scheduled_job:
+      name: "03_Scheduled_Job"
+      
+      # Define the schedule (e.g., runs every day at 8:00 AM London time)
+      schedule:
+        quartz_cron_expression: "0 0 8 * * ?"
+        timezone_id: "Europe/London"
+        pause_status: "PAUSED"
+        
+      tasks:
+        - task_key: "run_notebook"
+          notebook_task:
+            notebook_path: "../../src/scheduled_notebook.py"
+          environment_key: Default
+          
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

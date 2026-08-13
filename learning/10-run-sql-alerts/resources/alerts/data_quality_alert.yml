@@ -1,0 +1,17 @@
+resources:
+  alerts:
+    data_quality_alert:
+      display_name: "10_Data_Quality_Alert"
+      query_text: "SELECT COUNT(*) AS error_count FROM main.demo.alerts_data WHERE status = 'ERROR'"
+      warehouse_id: ${var.sql_warehouse_id}
+      evaluation:
+        comparison_operator: GREATER_THAN
+        source:
+          name: 'error_count'
+        threshold:
+          value:
+            double_value: 0
+      schedule:
+        quartz_cron_schedule: "0 0 8 * * ?"
+        timezone_id: "Europe/London"
+        pause_status: "PAUSED"

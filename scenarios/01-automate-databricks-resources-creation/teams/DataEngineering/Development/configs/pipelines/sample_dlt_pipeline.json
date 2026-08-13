@@ -1,0 +1,41 @@
+{
+  "_comment": "Sample DLT pipeline — serverless, Unity Catalog, notebook source",
+  "resource_type": "pipeline",
+  "pipeline_bundle_name": "de_bronze_silver_pipeline",
+  "pipeline_name": "DataEngineering — Bronze to Silver Pipeline",
+  "catalog": "main",
+  "target_schema": "demo",
+  "serverless": true,
+  "continuous": false,
+  "development_mode": true,
+  "channel": "CURRENT",
+  "photon": false,
+  "libraries": [
+    {
+      "notebook_path": "../../src/notebooks/dlt_bronze_ingest.py"
+    },
+    {
+      "notebook_path": "../../src/notebooks/dlt_silver_transform.py"
+    }
+  ],
+  "pipeline_config": {
+    "spark.databricks.sql.initial.catalog.name": "main"
+  },
+  "pipeline_tags": {
+    "team": "DataEngineering",
+    "layer": "demo",
+    "managed_by": "dab-generator"
+  },
+  "notifications": [
+    {
+      "email_recipients": ["team@example.com"],
+      "alerts": ["on-update-failure", "on-update-fatal-failure"]
+    }
+  ],
+  "permissions": [
+    {
+      "group_name": "DataEngineers",
+      "level": "CAN_MANAGE"
+    }
+  ]
+}

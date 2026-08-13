@@ -1,0 +1,151 @@
+
+resources:
+  jobs:
+    de_ingest_notebook_job:
+      name: "DataEngineering — Daily Ingest (Notebook)"
+
+      max_concurrent_runs: 1
+
+
+      timeout_seconds: 3600
+
+
+
+      health:
+        rules:
+          - metric: RUN_DURATION_SECONDS
+            op: GREATER_THAN
+            value: 1800
+
+
+      tasks:
+        
+        - task_key: ingest_raw_data
+
+          
+
+          environment_key: Default
+
+
+          
+
+          
+          notebook_task:
+            notebook_path: "../../src/notebooks/01_ingest_raw_data.py"
+            source: WORKSPACE
+
+            base_parameters:
+
+              table_name: "raw_events"
+
+              source_path: "/mnt/landing/events"
+
+
+
+
+
+          
+
+
+          
+
+          max_retries: 2
+
+          min_retry_interval_millis: 30000
+          retry_on_timeout: true
+
+
+
+          
+
+
+          
+
+
+          
+
+
+        - task_key: transform_data
+
+          
+
+          environment_key: Default
+
+
+          
+
+          
+          notebook_task:
+            notebook_path: "../../src/notebooks/02_transform_data.py"
+            source: WORKSPACE
+
+
+
+
+          
+
+          timeout_seconds: 1800
+
+
+          
+
+
+          
+
+          depends_on:
+
+            - task_key: ingest_raw_data
+
+
+
+          
+
+
+          
+
+
+      
+
+      environments:
+        - environment_key: Default
+          spec:
+            client: "1"
+      performance_target: PERFORMANCE_OPTIMIZED
+
+
+      
+
+      email_notifications:
+
+
+
+        no_alert_for_skipped_runs: true
+
+
+      
+      
+
+      
+
+
+      queue:
+        enabled: true
+
+      
+
+
+      
+
+
+      
+
+
+      
+
+      permissions:
+
+
+        - group_name: "DataEngineers"
+          level: CAN_MANAGE_RUN
+
+

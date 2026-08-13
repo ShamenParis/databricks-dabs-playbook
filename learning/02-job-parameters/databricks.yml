@@ -1,0 +1,7 @@
+bundle:
+  name: 02-job-parameters
+
+# Dynamically load all resource definitions from their respective folders
+include:
+  - "resources/jobs/*.yml"
+  # - "resources/pipelines/*.yml" # Ready for future lessons

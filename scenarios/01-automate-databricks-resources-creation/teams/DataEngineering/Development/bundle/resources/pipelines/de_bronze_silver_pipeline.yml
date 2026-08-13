@@ -1,0 +1,86 @@
+
+resources:
+  pipelines:
+    de_bronze_silver_pipeline:
+      name: "DataEngineering — Bronze to Silver Pipeline"
+
+      
+
+      catalog: "main"
+
+
+      target: "demo"
+
+
+      
+      libraries:
+
+
+        - notebook:
+            path: "../../src/notebooks/dlt_bronze_ingest.py"
+
+
+
+        - notebook:
+            path: "../../src/notebooks/dlt_silver_transform.py"
+
+
+
+      
+      continuous: false
+      development: true
+
+      
+      channel: "CURRENT"
+
+      
+
+      serverless: true
+
+
+      
+
+      configuration:
+
+        spark.databricks.sql.initial.catalog.name: "main"
+
+
+
+      
+
+      notifications:
+
+        - email_recipients:
+
+            - team@example.com
+
+          alerts:
+
+            - on-update-failure
+
+            - on-update-fatal-failure
+
+
+
+
+      
+
+      tags:
+
+        team: "DataEngineering"
+
+        layer: "demo"
+
+        managed_by: "dab-generator"
+
+
+
+      
+
+      permissions:
+
+
+        - group_name: "DataEngineers"
+          level: CAN_MANAGE
+
+

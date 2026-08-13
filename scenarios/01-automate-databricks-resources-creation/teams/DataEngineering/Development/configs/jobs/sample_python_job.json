@@ -1,0 +1,26 @@
+{
+  "_comment": "Sample serverless Python script job — runs a .py file on serverless compute",
+  "resource_type": "job",
+  "job_bundle_name": "de_etl_python_job",
+  "job_name": "DataEngineering — ETL Python Job",
+  "use_serverless": true,
+  "max_concurrent_runs": 1,
+  "timeout_seconds": 7200,
+  "tags": {
+    "team": "DataEngineering",
+    "env": "Development",
+    "type": "etl"
+  },
+  "tasks": [
+    {
+      "task_key": "run_etl_pipeline",
+      "task_type": "python_task",
+      "python_file": "../../src/notebooks/etl_pipeline.py",
+      "task_parameters": {
+        "environment": "development",
+        "batch_date": "{{job.start_time.iso_date}}"
+      },
+      "max_retries": 1
+    }
+  ]
+}

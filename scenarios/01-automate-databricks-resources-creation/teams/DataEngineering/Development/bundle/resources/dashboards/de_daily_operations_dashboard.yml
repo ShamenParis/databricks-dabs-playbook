@@ -1,0 +1,34 @@
+
+resources:
+  dashboards:
+    de_daily_operations_dashboard:
+      display_name: "DataEngineering — Daily Operations"
+
+      
+
+
+      
+      warehouse_id: "${var.sqlWarehouseId}"
+
+      
+      embed_credentials: false
+
+      
+
+      parent_path: "/Shared/DataEngineering"
+
+
+      
+
+      permissions:
+
+
+        - group_name: "DataEngineers"
+          level: CAN_EDIT
+
+
+
+        - group_name: "Analysts"
+          level: CAN_READ
+
+

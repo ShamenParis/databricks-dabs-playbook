@@ -1,0 +1,18 @@
+{
+  "_comment": "Sample Lakeview dashboard config. BEFORE DEPLOYING: (1) Set sql_warehouse_id in environment.yml. (2) Export a dashboard from your workspace (Dashboards → ⋯ → Export) and save as .lvdash.json. (3) Add: file_path pointing to your exported file (relative to pipelines/ bundle root). Without file_path, Databricks creates an empty dashboard and you fill it in the UI.",
+  "resource_type": "dashboard",
+  "dashboard_bundle_name": "de_daily_operations_dashboard",
+  "display_name": "DataEngineering — Daily Operations",
+  "embed_credentials": false,
+  "parent_path": "/Shared/DataEngineering",
+  "permissions": [
+    {
+      "group_name": "DataEngineers",
+      "level": "CAN_EDIT"
+    },
+    {
+      "group_name": "Analysts",
+      "level": "CAN_READ"
+    }
+  ]
+}

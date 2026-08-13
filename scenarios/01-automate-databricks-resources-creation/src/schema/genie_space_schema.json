@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Genie Space Config Schema",
+  "type": "object",
+  "required": [
+    "resource_type",
+    "genie_bundle_name",
+    "display_name"
+  ],
+  "properties": {
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "genie_space"
+      ]
+    },
+    "genie_bundle_name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "description": {
+      "type": "string"
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "table_name"
+        ],
+        "properties": {
+          "catalog_name": {
+            "type": "string"
+          },
+          "schema_name": {
+            "type": "string"
+          },
+          "table_name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "curated_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "instructions": {
+      "type": "string",
+      "description": "System prompt / Genie instructions"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "level"
+        ],
+        "properties": {
+          "group_name": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "CAN_VIEW",
+              "CAN_EDIT",
+              "CAN_MANAGE"
+            ]
+          }
+        }
+      }
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Optional comment for documentation purposes"
+    }
+  },
+  "additionalProperties": false
+}

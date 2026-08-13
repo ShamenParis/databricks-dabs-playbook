@@ -1,0 +1,29 @@
+resources:
+  jobs:
+    sql_orchestration_job:
+      name: "09_Run_SQL_Files"
+
+      tasks:
+        # Task A: Python script to set up our table
+        - task_key: "task_a_setup"
+          notebook_task:
+            notebook_path: "../../src/task_a_setup.py"
+          environment_key: Default
+            
+        # Task B: Raw SQL file to execute transformations
+        - task_key: "task_b_sql_transform"
+          depends_on:
+            - task_key: "task_a_setup"
+          sql_task:
+            file:
+              path: "../../src/task_b_transform.sql"
+              source: WORKSPACE
+            warehouse_id: ${var.sql_warehouse_id}
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

@@ -1,0 +1,84 @@
+# Variables Configuration — {{ team_name }} / {{ env_name }}
+# Generated automatically by generate_resources.py
+# DO NOT EDIT DIRECTLY — update configs/variables/environment.yml and re-generate.
+
+variables:
+
+  # ── Workspace ────────────────────────────────────────────────────────────────
+  workspaceHost:
+    description: "Databricks workspace URL (e.g. https://adb-xxxx.azuredatabricks.net)"
+    {% if variables.workspace_host is defined %}
+    default: "{{ variables.workspace_host }}"
+    {% endif %}
+
+  deploySpn:
+    description: "Service principal application ID used by run_as (leave blank for free edition)"
+    {% if variables.service_principal_name is defined %}
+    default: "{{ variables.service_principal_name }}"
+    {% endif %}
+
+  deploymentRootPath:
+    description: "Root path for deployed assets in the workspace"
+    default: "/Workspace/Shared/{{ team_name }}/"
+
+  # ── Environment ───────────────────────────────────────────────────────────────
+  currentEnv:
+    description: "Current environment name"
+    default: "{{ env_name }}"
+
+  envNameShort:
+    description: "Short environment identifier for resource naming"
+    default: "{{ env_name | lower | replace('-', '_') | replace(' ', '_') }}"
+
+  teamNameShort:
+    description: "Short team identifier for resource naming"
+    {% if variables.team_short_name is defined %}
+    default: "{{ variables.team_short_name }}"
+    {% else %}
+    default: "{{ team_name | lower | replace(' ', '_') }}"
+    {% endif %}
+
+  # ── Compute — Serverless (Free Edition default) ───────────────────────────────
+  environmentVersion:
+    description: "Databricks serverless environment version"
+    default: "{{ variables.environment_version | default('5') }}"
+
+  # ── Compute — Classic clusters (optional, paid workspaces) ───────────────────
+  sparkVersion:
+    description: "Databricks Runtime version for job clusters"
+    default: "{{ variables.spark_version | default('16.4.x-scala2.12') }}"
+
+  clusterNodeType:
+    description: "Node type ID for job clusters"
+    default: "{{ variables.cluster_node_type | default('Standard_D4ds_v5') }}"
+
+  maxWorkers:
+    description: "Maximum autoscale workers for job clusters"
+    default: {{ variables.max_workers | default(2) }}
+
+  # ── Unity Catalog ─────────────────────────────────────────────────────────────
+  catalogName:
+    description: "Unity Catalog catalog name"
+    {% if variables.catalog_name is defined %}
+    default: "{{ variables.catalog_name }}"
+    {% endif %}
+
+  schemaName:
+    description: "Unity Catalog schema / database name"
+    default: "{{ variables.schema_name | default('default') }}"
+
+  # ── SQL Warehouse ─────────────────────────────────────────────────────────────
+  sqlWarehouseId:
+    description: "SQL Warehouse ID for dashboards, genie spaces, and alerts"
+    {% if variables.sql_warehouse_id is defined %}
+    default: "{{ variables.sql_warehouse_id }}"
+    {% endif %}
+
+  # ── Tags ──────────────────────────────────────────────────────────────────────
+  teamTag:
+    description: "Tag value identifying the owning team"
+    default: "{{ team_name }}"
+
+  costCentre:
+    description: "Cost centre / recharge group for billing"
+    default: "{{ variables.cost_centre | default('') }}"

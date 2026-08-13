@@ -1,0 +1,5 @@
+bundle:
+  name: 08-use-if-else-task
+
+include:
+  - "resources/jobs/*.yml"

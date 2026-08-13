@@ -1,0 +1,35 @@
+{
+  "_comment": "Sample Genie Space (AI/BI) — requires sql_warehouse_id in environment.yml and Unity Catalog tables",
+  "resource_type": "genie_space",
+  "genie_bundle_name": "de_data_genie_space",
+  "display_name": "DataEngineering Data Assistant",
+  "description": "Ask natural language questions about the data engineering pipelines and metrics.",
+  "tables": [
+    {
+      "catalog_name": "main",
+      "schema_name": "demo",
+      "table_name": "daily_events"
+    },
+    {
+      "catalog_name": "main",
+      "schema_name": "demo",
+      "table_name": "pipeline_metrics"
+    }
+  ],
+  "curated_questions": [
+    "How many events were ingested today?",
+    "What was the average pipeline run time this week?",
+    "Which tables had the most data quality failures last month?"
+  ],
+  "instructions": "You are a data assistant for the DataEngineering team. Focus on pipeline performance, data volumes, and data quality metrics. Always provide counts and trends when asked about volumes.",
+  "permissions": [
+    {
+      "group_name": "DataEngineers",
+      "level": "CAN_MANAGE"
+    },
+    {
+      "group_name": "Analysts",
+      "level": "CAN_VIEW"
+    }
+  ]
+}

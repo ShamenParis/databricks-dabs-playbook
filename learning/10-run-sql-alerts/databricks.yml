@@ -1,0 +1,11 @@
+bundle:
+  name: 10-run-sql-alerts
+
+variables:
+  sql_warehouse_id:
+    lookup:
+      warehouse: 'Serverless Starter Warehouse'
+
+# Dynamically load all resource definitions across all subfolders
+include:
+  - "resources/**/*.yml"

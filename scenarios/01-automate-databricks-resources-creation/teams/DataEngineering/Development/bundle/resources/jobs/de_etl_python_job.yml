@@ -1,0 +1,87 @@
+
+resources:
+  jobs:
+    de_etl_python_job:
+      name: "DataEngineering — ETL Python Job"
+
+      max_concurrent_runs: 1
+
+
+      timeout_seconds: 7200
+
+
+
+
+      tasks:
+        
+        - task_key: run_etl_pipeline
+
+          
+
+          environment_key: Default
+
+
+          
+
+          spark_python_task:
+            python_file: "../../src/notebooks/etl_pipeline.py"
+
+            parameters:
+
+              - "--environment=development"
+
+              - "--batch_date={{job.start_time.iso_date}}"
+
+
+
+
+
+          
+
+
+          
+
+          max_retries: 1
+
+
+
+          
+
+
+          
+
+
+          
+
+
+      
+
+      environments:
+        - environment_key: Default
+          spec:
+            client: "1"
+      performance_target: PERFORMANCE_OPTIMIZED
+
+
+      
+
+
+      
+      
+
+      
+
+
+      queue:
+        enabled: true
+
+      
+
+
+      
+
+
+      
+
+
+      

@@ -1,0 +1,25 @@
+resources:
+  jobs:
+    file_trigger_job:
+      name: "04_File_Arrival_Trigger_Job"
+      
+      # Configure the job to trigger when a file arrives in a Unity Catalog Volume
+      trigger:
+        file_arrival:
+          url: "/Volumes/main/demo/landing_zone/" # Add your Volume path
+          min_time_between_triggers_seconds: 70
+          wait_after_last_change_seconds: 61
+        
+      tasks:
+        - task_key: "process_new_file"
+          notebook_task:
+            notebook_path: "../../src/file_trigger_notebook.py"
+          environment_key: Default
+          
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"

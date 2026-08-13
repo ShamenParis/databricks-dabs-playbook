@@ -1,0 +1,5 @@
+bundle:
+  name: 12-create-pipeline
+
+include:
+  - "resources/pipelines/*.yml"

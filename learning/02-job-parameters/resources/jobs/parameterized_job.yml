@@ -1,0 +1,30 @@
+resources:
+  jobs:
+    parameterized_job:
+      name: "02_Job_With_Parameters"
+      
+      # Define Job-Level Parameters with default values
+      parameters:
+        - name: "environment"
+          default: "development"
+        - name: "greeting"
+          default: "Hello from Default Parameters!"
+          
+      tasks:
+        - task_key: "run_with_params"
+          spark_python_task:
+            python_file: "../../src/job_parameters.py" # Adjusted for nested directory
+            # Inject job parameters into the Python script arguments
+            parameters: [
+              "--env", "{{job.parameters.environment}}",
+              "--greeting", "{{job.parameters.greeting}}"
+            ]
+          environment_key: Default
+          
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"
