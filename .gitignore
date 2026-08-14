@@ -1,5 +1,7 @@
 .venv
 .env
 venv
-__pycache__
-.databricks
+.databricks/
+__pycache__/
+*.pyc
+.DS_Store
