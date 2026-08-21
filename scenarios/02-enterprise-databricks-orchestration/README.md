@@ -17,9 +17,9 @@ This module provisions an interconnected set of resources:
 - **Modular Resources:** Resources are organised logically into domain folders (`product` and `retail`) rather than lumped into a single file.
 - **Dynamic Glob Inclusion:** The `databricks.yml` dynamically loads all YAML configurations from deeply nested directories using the `**/*.yml` pattern.
 - **Variable Injection:** Uses `variables` to inject standard target schemas and catalogs (e.g., `main.demo`) into resources dynamically.
-- **Job-to-Job Dependencies:** Demonstrates how one master job (`job1`) can orchestrate and trigger other downstream jobs (`job2` and `job3`) using `run_job_task`.
-- **Pipeline Orchestration:** Demonstrates triggering Delta Live Tables pipelines (`dlt_pipeline_bronze` and `dlt_pipeline_silver`) from within Databricks Jobs.
-
+- **Production-Grade Orchestration:** Demonstrates how Databricks Workflows can act as a fully-fledged enterprise orchestrator (similar to Airflow). It dynamically resolves dependencies between disparate assets using their logical bundle IDs (e.g., `${resources.jobs.job3.id}` or `${resources.pipelines.dlt_pipeline_bronze.id}`) rather than hardcoding environment-specific IDs.
+- **Job-to-Job Dependencies:** Shows how a master orchestrator job (`job1`) can trigger other standalone downstream jobs (`job2` and `job3`) using the `run_job_task` capability.
+- **Pipeline Orchestration:** Shows how to trigger Delta Live Tables pipelines (`dlt_pipeline_bronze` and `dlt_pipeline_silver`) seamlessly from within standard Databricks Jobs.
 ---
 
 ## Repository Structure
