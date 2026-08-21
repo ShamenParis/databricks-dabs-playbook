@@ -37,6 +37,7 @@ A collection of real-world, scenario-based Declarative Automation Bundle templat
 | Scenario | Description | Tech Stack |
 | :--- | :--- | :--- |
 | [01. Automate Databricks Resource Creation](./scenarios/01-automate-databricks-resources-creation) | Template-driven automation for deploying Databricks resources (Jobs, Pipelines, Monitors, Dashboards) | DABs, YAML, Jinja2, Python |
+| [02. Enterprise Databricks Orchestration](./scenarios/02-enterprise-databricks-orchestration) | Modular enterprise repository structure with domain-driven workflows, dynamic glob loading, and cross-job/pipeline orchestrations | DABs, YAML, DLT, Python |
 
 ---
 

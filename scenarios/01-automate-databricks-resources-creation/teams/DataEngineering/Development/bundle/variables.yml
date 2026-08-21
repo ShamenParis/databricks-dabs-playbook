@@ -7,9 +7,8 @@ variables:
   # ── Workspace ────────────────────────────────────────────────────────────────
   workspaceHost:
     description: "Databricks workspace URL (e.g. https://adb-xxxx.azuredatabricks.net)"
-    
-    default: "https://dbc-eb4706a8-23c4.cloud.databricks.com/"
-    
+    # REPLACE WITH YOUR ACTUAL DATABRICKS WORKSPACE URL
+    default: "https://YOUR_WORKSPACE_URL.cloud.databricks.com/"
 
   deploySpn:
     description: "Service principal application ID used by run_as (leave blank for free edition)"

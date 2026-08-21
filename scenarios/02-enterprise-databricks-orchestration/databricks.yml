@@ -1,0 +1,12 @@
+bundle:
+  name: 02-enterprise-databricks-orchestration
+
+# Dynamically load all resource definitions from their respective folders
+include:
+  - "resources/*/*/*.yml"
+  - "variables/*.yml"
+
+targets:
+  dev:
+    default: true
+    
