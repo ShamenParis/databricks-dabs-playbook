@@ -1,0 +1,8 @@
+variables:
+  catalog_name:
+    default: "main"
+  dlt_schema_name:
+    default: "demo"
+  workspace_url:
+    # REPLACE WITH YOUR ACTUAL DATABRICKS WORKSPACE URL
+    default: https://YOUR_WORKSPACE_URL.cloud.databricks.com/

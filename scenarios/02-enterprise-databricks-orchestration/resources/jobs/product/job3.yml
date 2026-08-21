@@ -1,0 +1,25 @@
+resources:
+  jobs:
+    job3:
+      name: "product_job_3"
+
+      tasks:
+        - task_key: "notebook_D"
+          notebook_task:
+            notebook_path: "../../../src/notebooks/notebook_D.py"
+          environment_key: Default
+
+        - task_key: "notebook_E"
+          depends_on:
+            - task_key: "notebook_D"
+          notebook_task:
+            notebook_path: "../../../src/notebooks/notebook_E.py"
+          environment_key: Default
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        enterprise_demo: "true"

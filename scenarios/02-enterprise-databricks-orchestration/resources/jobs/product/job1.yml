@@ -1,0 +1,37 @@
+resources:
+  jobs:
+    job1:
+      name: "product_job_1"
+
+      tasks:
+        - task_key: "notebook_A"
+          notebook_task:
+            notebook_path: "../../../src/notebooks/notebook_A.py"
+          environment_key: Default
+
+        - task_key: "notebook_B"
+          depends_on:
+            - task_key: "notebook_A"
+          notebook_task:
+            notebook_path: "../../../src/notebooks/notebook_B.py"
+          environment_key: Default
+
+        - task_key: "run_job_2"
+          depends_on:
+            - task_key: "notebook_B"
+          run_job_task:
+            job_id: ${resources.jobs.job2.id}
+        
+        - task_key: "run_job_3"
+          depends_on:
+            - task_key: "notebook_B"
+          run_job_task:
+            job_id: ${resources.jobs.job3.id}
+            
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        enterprise_demo: "true"

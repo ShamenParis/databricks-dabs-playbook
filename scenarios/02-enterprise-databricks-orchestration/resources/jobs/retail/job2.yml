@@ -1,0 +1,37 @@
+resources:
+  jobs:
+    job2:
+      name: "retail_job_2"
+
+      tasks:
+        - task_key: "pipeline_bronze"
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.dlt_pipeline_bronze.id}
+
+        - task_key: "file_1"
+          depends_on:
+            - task_key: "pipeline_bronze"
+          spark_python_task:
+            python_file: "../../../src/files/initial_run.py"
+          environment_key: Default
+        
+        - task_key: "notebook_C"
+          depends_on:
+            - task_key: "file_1"
+          notebook_task:
+            notebook_path: "../../../src/notebooks/notebook_C.py"
+          environment_key: Default
+        
+        - task_key: "pipeline_silver"
+          depends_on:
+            - task_key: "notebook_C"
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.dlt_pipeline_silver.id}
+            
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        enterprise_demo: "true"

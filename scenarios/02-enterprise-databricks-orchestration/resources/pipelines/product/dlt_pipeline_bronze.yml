@@ -1,0 +1,11 @@
+resources:
+  pipelines:
+    dlt_pipeline_bronze:
+      name: "dlt_pipeline_bronze"
+      catalog: ${var.catalog_name}
+      target: ${var.dlt_schema_name}
+      development: true
+      serverless: true
+      libraries:
+        - file:
+            path: "../../../src/files/dlt_pipeline_bronze.py"
