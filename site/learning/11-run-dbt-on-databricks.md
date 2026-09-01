@@ -55,4 +55,4 @@ databricks bundle run dbt_orchestration_job
 
 `task_a_setup_data` creates the raw source table, `task_b_dbt_run` compiles and runs the dbt model (`stg_users.sql`) on the SQL Warehouse, materialising it as a Delta table in `main.demo`. `task_c_validate_output` then reads and displays the filtered result.
 
-[View Demo: 02-dbt-run.mp4](../../docs/learning/11-run-dbt-on-databricks/02-dbt-run.mp4)
+<video controls width="100%" style="border-radius:8px; margin:1em 0;"><source src="{{ site.baseurl }}/images/learning/11-run-dbt-on-databricks/02-dbt-run.mp4" type="video/mp4">Your browser does not support the video tag.</video>
