@@ -89,6 +89,13 @@ def transform_image_paths(content, module_folder):
         content
     )
 
+    # Convert .mp4 demo links to embedded HTML5 video players
+    content = re.sub(
+        r"\[(?:View Demo:?\s*)?(.*?)\]\(\.\./\.\./docs/learning/([^)]+\.mp4)\)",
+        r'<video controls width="100%" style="border-radius:8px; margin:1em 0;"><source src="{{ site.baseurl }}/images/learning/\2" type="video/mp4">Your browser does not support the video tag.</video>',
+        content
+    )
+
     # Escape raw liquid tags if present (e.g. {{tasks.task_a.values.target_table}})
     content = re.sub(r"(\{\{\s*tasks\.[^}]+\}\})", r"{% raw %}\1{% endraw %}", content)
 

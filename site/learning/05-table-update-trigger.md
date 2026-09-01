@@ -61,4 +61,4 @@ Once deployed, the job will enter a "Waiting for table update" state. You can ve
 
 Run a simple `INSERT`, `UPDATE`, or `MERGE` statement against `main.demo.landing_table` using the Databricks SQL Editor or a notebook. The job will detect the Delta commit and start automatically.
 
-[View Demo: 04-trigger-job.mp4](../../docs/learning/05-table-update-trigger/04-trigger-job.mp4)
+<video controls width="100%" style="border-radius:8px; margin:1em 0;"><source src="{{ site.baseurl }}/images/learning/05-table-update-trigger/04-trigger-job.mp4" type="video/mp4">Your browser does not support the video tag.</video>

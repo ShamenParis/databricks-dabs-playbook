@@ -68,4 +68,4 @@ Upload a sample file (such as a `.csv` or `.txt`) into your `/Volumes/main/defau
 
 A test file is available at [docs/downloads/04-file-trigger/trigger.csv](https://github.com/ShamenParis/databricks-dabs-playbook/raw/main/docs/downloads/04-file-trigger/trigger.csv).
 
-[View Demo: 04-trigger-file-test.mp4](../../docs/learning/04-file-trigger/04-trigger-file-test.mp4)
+<video controls width="100%" style="border-radius:8px; margin:1em 0;"><source src="{{ site.baseurl }}/images/learning/04-file-trigger/04-trigger-file-test.mp4" type="video/mp4">Your browser does not support the video tag.</video>
