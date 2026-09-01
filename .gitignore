@@ -6,7 +6,7 @@ __pycache__/
 *.pyc
 .DS_Store
 
-# Jekyll (GitHub Pages site)
+# Jekyll (GitHub Pages site build output)
 site/_site/
 site/.jekyll-cache/
 site/.jekyll-metadata

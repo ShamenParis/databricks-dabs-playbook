@@ -10,7 +10,7 @@ remote_theme: just-the-docs/just-the-docs@v0.10.0
 # Colour scheme
 color_scheme: dark
 
-# Logo (displayed in the sidebar header)
+# Logo
 logo: "/databricks-dabs-playbook/images/learning/00-initial-setup/mvp_logo.svg"
 
 # Search
@@ -21,7 +21,7 @@ search.preview_words_before: 5
 search.preview_words_after: 10
 search.tokenizer_separator: /[\s/]+/
 
-# Aux links (top-right corner)
+# Aux links
 aux_links:
   "View on GitHub":
     - "https://github.com/ShamenParis/databricks-dabs-playbook"
