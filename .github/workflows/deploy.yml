@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - test
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -33,14 +34,17 @@ jobs:
       - name: Auto-Sync Site Content from Code & READMEs
         run: python3 scripts/sync_site.py
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          source: ./site
-          destination: ./_site
+          ruby-version: '3.2'
+          working-directory: './site'
+          bundler-cache: true
+
+      - name: Build Jekyll Site
+        run: |
+          cd site
+          bundle exec jekyll build --destination ../_site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
