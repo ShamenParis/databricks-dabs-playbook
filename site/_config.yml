@@ -1,0 +1,65 @@
+# Site Settings
+title: "Databricks DABs Playbook"
+description: "Production-ready Declarative Automation Bundle templates — scenario-based learning, visual architectures, and copy-paste-ready code."
+baseurl: "/databricks-dabs-playbook"
+url: "https://shamenparis.github.io"
+
+# Theme
+remote_theme: just-the-docs/just-the-docs@v0.10.0
+
+# Colour scheme
+color_scheme: dark
+
+# Logo (displayed in the sidebar header)
+logo: "/databricks-dabs-playbook/images/learning/00-initial-setup/mvp_logo.svg"
+
+# Search
+search_enabled: true
+search.heading_level: 3
+search.previews: 3
+search.preview_words_before: 5
+search.preview_words_after: 10
+search.tokenizer_separator: /[\s/]+/
+
+# Aux links (top-right corner)
+aux_links:
+  "View on GitHub":
+    - "https://github.com/ShamenParis/databricks-dabs-playbook"
+aux_links_new_tab: true
+
+# Footer
+footer_content: 'Created by <a href="https://medium.com/@shamen1209">Shamen Paris</a> — Databricks MVP | Data & AI Consultant'
+
+# Back to top link
+back_to_top: true
+back_to_top_text: "Back to top"
+
+# Navigation
+nav_sort: case_insensitive
+
+# Heading anchor links
+heading_anchors: true
+
+# External navigation links
+nav_external_links:
+  - title: Medium Articles
+    url: https://medium.com/@shamen1209
+  - title: YouTube Channel
+    url: https://www.youtube.com/@shamnix_data_and_ai
+
+# Build settings
+markdown: kramdown
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+# Exclude from build
+exclude:
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
