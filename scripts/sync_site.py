@@ -448,7 +448,14 @@ def sync_images():
             shutil.rmtree(scen02_dst)
         shutil.copytree(scen02_src, scen02_dst)
 
+    # Remove any leftover .md files in site/images to prevent Jekyll from creating duplicate pages
+    for root_path, _, files in os.walk(images_dst):
+        for f in files:
+            if f.endswith(".md"):
+                os.remove(os.path.join(root_path, f))
+
     print("✅ Synced all image and media assets to site/images/ and site/scenario-02-images/")
+
 
 
 def main():
