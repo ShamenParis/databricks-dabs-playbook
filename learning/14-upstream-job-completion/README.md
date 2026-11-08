@@ -39,10 +39,11 @@ variables:
 
 Once authenticated, navigate to this folder (`14-upstream-job-completion`) in your terminal.
 
-**Step 1: Validate and deploy**
+**Step 1: Validate, plan, and deploy**
 
 ```bash
 databricks bundle validate
+databricks bundle plan
 databricks bundle deploy
 ```
 
@@ -50,7 +51,7 @@ databricks bundle deploy
 
 **Step 2: Verify the trigger in the UI**
 
-Once deployed, open the Databricks Workflows UI and inspect `14-downstream-job`. Under **Schedules & Triggers**, you will see the **Job completion** trigger configured to listen for `14-upstream_job-job`.
+Once deployed, open the Databricks Workflows UI and inspect `14-downstream-job`. Under **Schedules & Triggers**, you will see **On upstream job completion (1 job, succeeded)** configured with **Runs after: `14-upstream_job-job`**.
 
 ![Workspace UI](../../docs/learning/14-upstream-job-completion/03-workspace-ui.png)
 

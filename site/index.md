@@ -12,7 +12,7 @@ permalink: /
 
 <div class="stats-bar">
   <div class="stat">
-    <div class="stat-number">13</div>
+    <div class="stat-number">14</div>
     <div class="stat-label">Learning Modules</div>
   </div>
   <div class="stat">
@@ -118,6 +118,12 @@ Start from zero and build your way up to advanced DAB orchestration patterns.
   <div class="card-title">13. Advanced Orchestration</div>
   <div class="card-desc">Build a master orchestrator that triggers a notebook, a DLT pipeline, and a child job in a single workflow</div>
   <div class="card-tags"><span class="tag">DABs</span><span class="tag">YAML</span><span class="tag">DLT</span><span class="tag">Python</span></div>
+</a>
+<a href="{{ site.baseurl }}/learning/14-upstream-job-completion" class="module-card">
+  <div class="card-number">Module 14</div>
+  <div class="card-title">14. Upstream Job Completion</div>
+  <div class="card-desc">Automatically trigger a downstream job when an upstream job finishes using `job_completion` triggers</div>
+  <div class="card-tags"><span class="tag">DABs</span><span class="tag">YAML</span><span class="tag">Python</span></div>
 </a>
 
 </div>
