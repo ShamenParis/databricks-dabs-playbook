@@ -1,0 +1,9 @@
+bundle:
+  name: 14-upstream-job-completion
+
+include:
+  - "resources/**/*.yml"
+
+variables:
+  workspace_id: 
+    default: "2040867186777008" # Replace with your actual workspace ID

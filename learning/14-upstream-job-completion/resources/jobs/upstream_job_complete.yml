@@ -1,0 +1,48 @@
+resources:
+  jobs:
+    upstream_job:
+      name: "14-upstream_job-job"
+
+      schedule:
+        quartz_cron_expression: 0 0 8 * * ?
+        timezone_id: Europe/London
+        pause_status: PAUSED
+          
+      tasks:
+        - task_key: "upstream_task"
+          notebook_task:
+            notebook_path: "../../src/job_1.py" # Adjusted for nested directory
+          environment_key: Default
+          
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"
+
+    downstream_job:
+      name: "14-downstream-job"
+
+      triggers:
+        - pause_status: UNPAUSED
+          job_completion:
+            jobs:
+              - workspace_id: "${var.workspace_id}"
+                job_id: "${resources.jobs.upstream_job.id}"
+            if_status: SUCCESS
+          
+      tasks:
+        - task_key: "downstream_task"
+          notebook_task:
+            notebook_path: "../../src/job_2.py" # Adjusted for nested directory
+          environment_key: Default
+          
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "5"
+      performance_target: PERFORMANCE_OPTIMIZED
+      tags:
+        DAB-Demo: "true"
