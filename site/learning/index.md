@@ -30,3 +30,4 @@ Structured learning modules for Databricks Asset Bundles (DABs). Each module bui
 | 11 | [11. Run dbt on Databricks]({{ site.baseurl }}/learning/11-run-dbt-on-databricks) | Orchestrate a dbt Core project natively in Databricks Workflows using the `dbt_task` type | DABs, YAML, dbt, SQL |
 | 12 | [12. Create a Pipeline]({{ site.baseurl }}/learning/12-create-pipeline) | Provision a Serverless Delta Live Tables pipeline with Bronze and Silver layers | DABs, YAML, DLT, Python |
 | 13 | [13. Advanced Orchestration]({{ site.baseurl }}/learning/13-advanced-job-pipeline) | Build a master orchestrator that triggers a notebook, a DLT pipeline, and a child job in a single workflow | DABs, YAML, DLT, Python |
+| 14 | [14. Upstream Job Completion]({{ site.baseurl }}/learning/14-upstream-job-completion) | Automatically trigger a downstream job when an upstream job finishes using `job_completion` triggers | DABs, YAML, Python |
